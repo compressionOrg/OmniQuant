@@ -230,8 +230,8 @@ def main():
         help="attention implementation that the model works with",
     )
     parser.add_argument("--net", type=str, default=None, choices=net_choices)
-    parser.add_argument("--act-scales", type=str, default=None)
-    parser.add_argument("--act-shifts", type=str, default=None)
+    parser.add_argument("--act_scales", type=str, default=None)
+    parser.add_argument("--act_shifts", type=str, default=None)
 
     args = parser.parse_args()
     random.seed(args.seed)
@@ -260,6 +260,8 @@ def main():
     # load model
     if args.net is None:
         args.net = args.model.split('/')[-1]
+        if '-hf' in args.net:
+            args.net = args.net.replace('-hf', '')
     # assert args.net in net_choices
     args.model_family = args.net.split('-')[0]
     lm = LMClass(args)

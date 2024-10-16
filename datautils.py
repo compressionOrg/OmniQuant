@@ -1,6 +1,6 @@
 import pdb
 from transformers import AutoTokenizer
-from datasets import load_dataset
+from datasets import load_dataset, load_from_disk
 import numpy as np
 import torch
 import random
@@ -15,7 +15,7 @@ def set_seed(seed):
 
 def get_pile(nsamples, seed, seqlen, model):
     print("get_pile")
-    traindata = load_dataset("json", data_files='/cpfs01/user/chenmengzhao/prompt_quantization/val.jsonl.zst', split="train")
+    traindata = load_dataset("json", data_files='~/.cache/datasets/plie/val.jsonl.zst', split="train")
 
     tokenizer = AutoTokenizer.from_pretrained(model, use_fast=False)
     trainenc = tokenizer("\n\n".join(traindata['text'][:1000]), return_tensors='pt')
@@ -34,9 +34,12 @@ def get_pile(nsamples, seed, seqlen, model):
 
 def get_wikitext2(nsamples, seed, seqlen, model):
     print("get_wikitext2")
-    traindata = load_dataset('wikitext', 'wikitext-2-raw-v1', split='train')
-    testdata = load_dataset('wikitext', 'wikitext-2-raw-v1', split='test')
-
+    # traindata = load_dataset('wikitext', 'wikitext-2-raw-v1', split='train')
+    # testdata = load_dataset('wikitext', 'wikitext-2-raw-v1', split='test')
+    
+    traindata = load_from_disk("~/.cache/datasets/wikitext/train")
+    testdata = load_from_disk("~/.cache/datasets/wikitext/test")
+    
     tokenizer = AutoTokenizer.from_pretrained(model, use_fast=False)
     trainenc = tokenizer("\n\n".join(traindata['text']), return_tensors='pt')
     testenc = tokenizer("\n\n".join(testdata['text']), return_tensors='pt')
@@ -55,9 +58,11 @@ def get_wikitext2(nsamples, seed, seqlen, model):
 
 def get_ptb(nsamples, seed, seqlen, model):
     print("get_ptb")
-    traindata = load_dataset('ptb_text_only', 'penn_treebank', split='train')
-    valdata = load_dataset('ptb_text_only', 'penn_treebank', split='validation')
-
+    # traindata = load_dataset('ptb_text_only', 'penn_treebank', split='train')
+    # valdata = load_dataset('ptb_text_only', 'penn_treebank', split='validation')
+    
+    traindata = load_from_disk("~/.cache/datasets/ptb/train")
+    valdata = load_from_disk("~/.cache/datasets/ptb/test")
 
     tokenizer = AutoTokenizer.from_pretrained(model, use_fast=False)
 
@@ -77,13 +82,15 @@ def get_ptb(nsamples, seed, seqlen, model):
 
 def get_c4(nsamples, seed, seqlen, model):
     print("get_c4")
-    traindata = load_dataset(
-        'allenai/c4', data_files={'train': 'en/c4-train.00000-of-01024.json.gz'}, split='train'
-    )
-    valdata = load_dataset(
-        'allenai/c4', data_files={'validation': 'en/c4-validation.00000-of-00008.json.gz'}, split='validation'
-    )
-
+    # traindata = load_dataset(
+    #     'allenai/c4', data_files={'train': 'en/c4-train.00000-of-01024.json.gz'}, split='train'
+    # )
+    # valdata = load_dataset(
+    #     'allenai/c4', data_files={'validation': 'en/c4-validation.00000-of-00008.json.gz'}, split='validation'
+    # )
+    
+    traindata = load_from_disk("~/.cache/datasets/c4/train")
+    valdata = load_from_disk("~/.cache/datasets/c4/validation")
 
     tokenizer = AutoTokenizer.from_pretrained(model, use_fast=False)
 
@@ -119,9 +126,11 @@ def get_c4(nsamples, seed, seqlen, model):
 
 def get_ptb_new(nsamples, seed, seqlen, model):
     print("get_ptb_new")
-    traindata = load_dataset('ptb_text_only', 'penn_treebank', split='train')
-    testdata  = load_dataset('ptb_text_only', 'penn_treebank', split='test')
-
+    # traindata = load_dataset('ptb_text_only', 'penn_treebank', split='train')
+    # testdata  = load_dataset('ptb_text_only', 'penn_treebank', split='test')
+    
+    traindata = load_from_disk("~/.cache/datasets/c4/train")
+    testdata = load_from_disk("~/.cache/datasets/c4/validation")
 
     tokenizer = AutoTokenizer.from_pretrained(model, use_fast=False)
 
@@ -142,13 +151,16 @@ def get_ptb_new(nsamples, seed, seqlen, model):
 
 def get_c4_new(nsamples, seed, seqlen, model):
     print("get_c4_new")
-    traindata = load_dataset(
-        'allenai/c4', data_files={'train': 'en/c4-train.00000-of-01024.json.gz'}, split='train'
-    )
-    valdata = load_dataset(
-        'allenai/c4', data_files={'validation': 'en/c4-validation.00000-of-00008.json.gz'}, split='validation'
-    )
-
+    # traindata = load_dataset(
+    #     'allenai/c4', data_files={'train': 'en/c4-train.00000-of-01024.json.gz'}, split='train'
+    # )
+    # valdata = load_dataset(
+    #     'allenai/c4', data_files={'validation': 'en/c4-validation.00000-of-00008.json.gz'}, split='validation'
+    # )
+    
+    traindata = load_from_disk("~/.cache/datasets/c4/train")
+    valdata = load_from_disk("~/.cache/datasets/c4/validation")
+    
     tokenizer = AutoTokenizer.from_pretrained(model, use_fast=False)
     
     random.seed(seed)
